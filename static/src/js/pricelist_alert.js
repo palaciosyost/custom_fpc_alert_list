@@ -1,31 +1,36 @@
 /** @odoo-module **/
 
 $(document).ready(function () {
+    let redirectUrl = null; // Guardamos el href aquí
+
     // Crear el modal dinámicamente
     const modal = document.createElement("div");
     modal.id = "modal_price_list_notice";
-    modal.style.display = "none"; // 🔐 Asegura que esté oculto inicialmente
-    modal.style.position = "fixed";
-    modal.style.top = "0";
-    modal.style.left = "0";
-    modal.style.width = "100%";
-    modal.style.height = "100%";
-    modal.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-    modal.style.zIndex = "1050";
-    modal.style.justifyContent = "center";
-    modal.style.alignItems = "center";
-    modal.style.fontFamily = "'Helvetica Neue', sans-serif";
+    Object.assign(modal.style, {
+        display: "none",
+        position: "fixed",
+        top: "0",
+        left: "0",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        zIndex: "9999",
+        justifyContent: "center",
+        alignItems: "center",
+        fontFamily: "'Helvetica Neue', sans-serif",
+    });
 
     const modalContent = document.createElement("div");
-    modalContent.style.background = "#fff";
-    modalContent.style.padding = "25px 30px";
-    modalContent.style.borderRadius = "8px";
-    modalContent.style.maxWidth = "600px";
-    modalContent.style.width = "90%";
-    modalContent.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
-    modalContent.style.position = "relative";
+    Object.assign(modalContent.style, {
+        background: "#fff",
+        padding: "25px 30px",
+        borderRadius: "8px",
+        maxWidth: "600px",
+        width: "90%",
+        boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
+        position: "relative",
+    });
 
-    // Botón cerrar
     const closeButton = document.createElement("button");
     closeButton.innerHTML = "&times;";
     closeButton.setAttribute("aria-label", "Cerrar");
@@ -58,7 +63,6 @@ $(document).ready(function () {
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
 
-    // Mostrar/Ocultar
     const showModal = () => {
         modal.style.display = "flex";
     };
@@ -67,26 +71,28 @@ $(document).ready(function () {
         modal.style.display = "none";
     };
 
-    closeButton.addEventListener("click", hideModal);
+    // 🔄 Cuando el usuario cierra el modal, redirigimos
+    closeButton.addEventListener("click", () => {
+        hideModal();
+        if (redirectUrl) {
+            window.location.href = redirectUrl;
+        }
+    });
+
     window.addEventListener("click", (e) => {
         if (e.target === modal) hideModal();
     });
 
-    // Disparadores de apertura
-    const dropdown = document.querySelector(".o_pricelist_dropdown a");
-    // const dropdownMobile = document.querySelector(".o_wsale_offcanvas_title");
+    // Interceptar clics en los ítems del dropdown
+    const pricelistItems = document.querySelectorAll(".o_pricelist_dropdown .dropdown-menu a");
 
-    if (dropdown) {
-        dropdown.addEventListener("click", (e) => {
-            e.preventDefault();
-            showModal();
+    pricelistItems.forEach(item => {
+        item.addEventListener("click", function (e) {
+            e.preventDefault(); // ❌ Evita redirección inmediata
+            redirectUrl = this.href; // 🔒 Guarda la URL
+            showModal(); // 📣 Muestra el aviso
         });
-    }
+    });
 
-    // if (dropdownMobile) {
-    //     dropdownMobile.addEventListener("click", (e) => {
-    //         e.preventDefault();
-    //         showModal();
-    //     });
-    // }
+
 });
