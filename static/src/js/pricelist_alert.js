@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-document.addEventListener("DOMContentLoaded", function () {
+$(document).ready(function () {
     // Crear el modal dinámicamente
     const modal = document.createElement("div");
     modal.id = "modal_price_list_notice";
