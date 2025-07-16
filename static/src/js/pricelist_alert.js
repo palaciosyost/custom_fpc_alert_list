@@ -25,10 +25,12 @@ $(document).ready(function () {
         background: "#fff",
         padding: "25px 30px",
         borderRadius: "8px",
-        maxWidth: "600px",
+        maxWidth: "650px",
         width: "90%",
         boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
         position: "relative",
+        maxHeight: "80%",
+        overflowY: "auto",
     });
 
     const closeButton = document.createElement("button");
@@ -46,16 +48,24 @@ $(document).ready(function () {
     });
 
     const heading = document.createElement("h3");
-    heading.textContent = "Lista de precios actualizada";
+    heading.textContent = "Revisión de Pedido";
     heading.style.marginTop = "0";
     heading.style.color = "#222";
     heading.style.fontSize = "20px";
 
     const message = document.createElement("p");
-    message.textContent = "Estás cambiando la lista de precios. Los precios serán actualizados internamente. Gracias por tu comprensión.";
-    message.style.margin = "10px 0 0";
-    message.style.fontSize = "15px";
-    message.style.color = "#444";
+    message.innerHTML = `
+        1. Si alcanzas el mínimo de la lista, obtendrás estatus de <strong>Distribuidor Solar VIP</strong> por 60 días.<br>
+        Si en los próximos 30 días compras igual o más, tu nivel VIP se mantiene o mejora.<br><br>
+        2. Si no cumples el monto, recalcularemos tu pedido según la lista que corresponda.<br><br>
+        <strong>Aprovecha y mantén tus beneficios VIP con compras periódicas.</strong>
+    `;
+    Object.assign(message.style, {
+        margin: "10px 0 0",
+        fontSize: "15px",
+        color: "#444",
+        lineHeight: "1.5",
+    });
 
     modalContent.appendChild(closeButton);
     modalContent.appendChild(heading);
@@ -93,6 +103,4 @@ $(document).ready(function () {
             showModal(); // 📣 Muestra el aviso
         });
     });
-
-
 });
